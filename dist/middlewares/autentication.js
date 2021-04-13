@@ -11,6 +11,7 @@ const checkingToken = (req, res, next) => {
         .then((decoded) => {
         console.log('Decoded', decoded);
         req.user = decoded.user;
+        //console.log(req.user)
         next();
     })
         .catch(err => {

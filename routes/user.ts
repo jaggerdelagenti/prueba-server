@@ -11,7 +11,7 @@ const userRoutes = Router();
 userRoutes.post('/login', (req:Request,res:Response)=>{
     const body= req.body;
 
-    User.findOne({email:body.email},(err:any,userDB:any)=>{
+    User.findOne({username:body.username},(err:any,userDB:any)=>{
         if(err)throw err;
         if(!userDB){
             res.json({
@@ -25,8 +25,8 @@ userRoutes.post('/login', (req:Request,res:Response)=>{
             const tokenUser = Token.getJwtToken({
                 _id:userDB.id,
                 name:userDB.name,
-                email:userDB.email,
-                avatar:userDB.avatar
+                username:userDB.username,
+                email:userDB.email
             })
 
             res.json({
@@ -45,8 +45,8 @@ userRoutes.post('/login', (req:Request,res:Response)=>{
 //crear user
 userRoutes.post('/create',(req:Request,res:Response)=>{
     const user ={
-        firstname:req.body.firstname,
-        lastname:req.body.lastname,
+        firstname:req.body.first_name,
+        lastname:req.body.last_name,
         email:req.body.email,
         username:req.body.username,
         password:hashSync(req.body.password, 10),
@@ -56,16 +56,34 @@ userRoutes.post('/create',(req:Request,res:Response)=>{
         //rol profesional
         const tokenUser = Token.getJwtToken({
             _id:userDB.id,
-            firstname:userDB.firstname,
-            lastname:userDB.lastname,
+            firstname:userDB.first_name,
+            lastname:userDB.last_name,
             username:userDB.username,
             email:userDB.email,            
         })
+        let filter={};
+    
+        User.find( filter, (err:any, usersDB:any) => {
 
-        res.json({
-            ok:true,
-            token:tokenUser
-        });
+            if ( err ) throw err;
+
+            if ( !usersDB ) {
+                return res.json({
+                    ok: false,
+                    message: 'users not founded'
+                });
+            } 
+
+            res.json({
+                ok:true,
+                token:tokenUser
+            });
+
+        }); 
+
+        
+
+        
     }).catch(err=>{
         res.json({
             ok:false,
@@ -78,8 +96,8 @@ userRoutes.post('/create',(req:Request,res:Response)=>{
  userRoutes.put('/update', checkingToken, (req: any, res: Response ) => {
 
      const user = {
-       firstname: req.body.firstname || req.user.firstname,
-       lastname: req.body.lastname || req.user.lastname,
+       first_name: req.body.firstname || req.user.first_name,
+       last_name: req.body.lastname || req.user.last_name,
        username: req.body.username || req.user.username,
        email : req.body.email  || req.user.email,
        password : req.body.password  || req.user.password,
@@ -99,8 +117,8 @@ userRoutes.post('/create',(req:Request,res:Response)=>{
 
        const tokenUser = Token.getJwtToken({
            _id: userDB._id,
-           firstname: userDB.firstname,
-           lastname: userDB.lastname,
+           firstname: userDB.first_name,
+           lastname: userDB.last_name,
            email: userDB.email,
        });
 
@@ -113,6 +131,45 @@ userRoutes.post('/create',(req:Request,res:Response)=>{
    });
 
  });
+
+
+
+ //get user
+ userRoutes.get('/user', checkingToken, (req: any, res: Response ) => {
+
+    const user = {
+      username: req.body.username || req.user.username,
+      email : req.body.email  || req.user.email
+  }
+  User.findById( req.user._id, user, { new: true }, (err, userDB) => {
+
+      if ( err ) throw err;
+
+      if ( !userDB ) {
+          return res.json({
+              ok: false,
+              message: 'No existe un user con ese ID'
+          });
+      }
+
+      const User = {
+          _id: userDB._id,
+          username:userDB.username,
+          email: userDB.email,
+      };
+
+      res.json({
+          ok: true,
+          token: User
+      });
+
+
+  });
+
+});
+
+
+
 
 
 export default userRoutes;

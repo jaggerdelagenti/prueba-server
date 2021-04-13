@@ -2,9 +2,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-
-
-
 //User Schema
 const userSchema = new Schema({
     
@@ -43,8 +40,8 @@ userSchema.method('comparePass', function<Any>( password: string = ''): boolean 
 });
 
 export interface IUser extends Document {
-    firstname: string;
-    lastname:string;
+    first_name: string;
+    last_name:string;
     email: string;
     username:string;
     password: string;   
