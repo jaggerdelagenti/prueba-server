@@ -10,7 +10,7 @@ class Server {
         this.app = express_1.default();
     }
     start(callback) {
-        this.app.listen(process.env.PORT, callback);
+        this.app.listen(this.port, callback);
     }
 }
 exports.default = Server;
