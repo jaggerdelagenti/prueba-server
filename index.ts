@@ -14,6 +14,9 @@ server.app.use(bodyparser.json())
 //connection string
 const MONGODB_URI='mongodb+srv://maximendez:DMwQ0PjDaAXvBj1f@cluster0.2db6g.mongodb.net/test?retryWrites=true&w=majority'
 
+//CORS settings
+server.app.use(cors({origin:true, credentials:true}));
+
 //Connect db
 mongoose.connect(MONGODB_URI,
 {useNewUrlParser:true,useCreateIndex:true},(err)=>{
@@ -26,8 +29,7 @@ server.start(()=>{
 })
 
 
-//CORS settings
-server.app.use(cors({origin:true, credentials:true}));
+
 
 
 //app routes

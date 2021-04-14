@@ -20,10 +20,11 @@ mongoose_1.default.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex:
         throw err;
     console.log('Starships users database loaded successfully');
 });
+//CORS settings
+server.app.use(cors({origin:true, credentials:true}));
 server.start(() => {
     console.log(`Server running in port ${server.port}`);
 });
-//CORS settings
-server.app.use(cors_1.default({ origin: true, credentials: true }));
+
 //app routes
 server.app.use('/user', user_1.default);
