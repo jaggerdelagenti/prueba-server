@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/",
-    "postinstall": "npm run build"
+    "start": "node dist/"
   },
   "author": "Maxi Mendez",
   "license": "ISC",
