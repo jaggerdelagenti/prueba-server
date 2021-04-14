@@ -11,6 +11,7 @@ class Server {
     }
     start(callback) {
         /* this.app.listen(process.env.PORT , callback); */
+        const port = process.env.PORT || 8080;
         app.listen(port, () => {
             console.log('Express server listening on port', port)
         });
